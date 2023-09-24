@@ -3,8 +3,9 @@ import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> generateChatCompletion(String message) async {
   const apiKey =
-      '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'; // Replace with your actual API key
-  const apiUrl = 'https://api.openai.com/v1/engines/davinci/completions';
+      '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'; // Replace with your actual API key
+  const apiUrl =
+      'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions';
 
   final response = await http.post(
     Uri.parse(apiUrl),
@@ -14,7 +15,7 @@ Future<Map<String, dynamic>> generateChatCompletion(String message) async {
     },
     body: jsonEncode({
       'prompt': message,
-      'max_tokens': 256,
+      'max_tokens': 2000,
       'temperature': 1,
       'top_p': 1,
       'frequency_penalty': 0,

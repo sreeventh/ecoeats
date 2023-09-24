@@ -1,60 +1,79 @@
+import 'package:ecoeats/ViewModel/sharedpreferences.dart';
+import 'package:ecoeats/registration.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
-    // TODO: Implement login logic
+  Future<void> _login() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      print('User logged in: ${userCredential.user}');
+
+      SharedPref.setString('email', _emailController.text);
+      SharedPref.setString('password', _passwordController.text);
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RegistrationPage(),
+          ));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Eco Eats'),
+        title: const Text('Login Page'),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-                'assets/images/WhatsApp Image 2023-09-23 at 22.29.14.jpg'),
-            const SizedBox(height: 20),
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(
-                hintText: 'Email',
-              ),
+              decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 20),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(
-                hintText: 'Password',
-              ),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: _login,
               child: const Text('Login'),
-            ),
-            const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {},
-              child: const Text('Sign Up'),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: LoginPage(),
+  ));
 }

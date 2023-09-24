@@ -1,3 +1,4 @@
+import 'package:ecoeats/sign.dart';
 import 'package:flutter/material.dart';
 import 'utils.dart';
 import 'LoginPage.dart';
@@ -92,15 +93,23 @@ class Scene extends StatelessWidget {
                     stops: <double>[0, 1],
                   ),
                 ),
-                child: Center(
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(
-                        fontSize: 24 * ffem,
-                        fontWeight: FontWeight.w500,
-                        height: 1.5 * ffem / fem,
-                        color: const Color(0xffffffff),
-                        decoration: TextDecoration.none),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()));
+                  },
+                  child: Center(
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                          fontSize: 24 * ffem,
+                          fontWeight: FontWeight.w500,
+                          height: 1.5 * ffem / fem,
+                          color: const Color(0xffffffff),
+                          decoration: TextDecoration.none),
+                    ),
                   ),
                 ),
               ),
