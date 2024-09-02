@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> generateChatCompletion(String message) async {
   const apiKey =
-      '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'; // Replace with your actual API key
+      ''; // Replace with your actual API key
   const apiUrl =
       'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions';
 
